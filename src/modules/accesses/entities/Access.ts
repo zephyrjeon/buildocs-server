@@ -1,11 +1,6 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  ManyToOne,
-} from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CommonEntity } from '../../../common/entities/CommonEntity';
+import { Document } from '../../documents/entities/Document';
 import { User } from '../../users/entities/User';
 
 @Entity()
@@ -14,10 +9,8 @@ export class Access extends CommonEntity {
   id!: number;
 
   @ManyToOne(() => User)
-  @Column()
-  userId!: number;
+  user!: User;
 
   @ManyToOne(() => Document)
-  @Column()
-  documentId!: number;
+  document!: Document;
 }

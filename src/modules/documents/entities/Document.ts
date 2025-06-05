@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CommonEntity } from '../../../common/entities/CommonEntity';
+import { Access } from '../../accesses/entities/Access';
 import { Page } from '../../pages/entities/Page';
 import { User } from '../../users/entities/User';
 
@@ -21,10 +22,11 @@ export class Document extends CommonEntity {
   order!: number;
 
   @ManyToOne(() => User, (user) => user.documents)
-  @Column()
-  authorId!: number;
+  author!: User;
 
-  @OneToMany(() => Page, (page) => page.documentId)
-  @Column()
+  @OneToMany(() => Page, (page) => page.document)
   pages!: Page[];
+
+  @OneToMany(() => Access, (access) => access.document)
+  accesses!: Access[];
 }

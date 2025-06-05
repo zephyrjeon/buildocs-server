@@ -21,10 +21,8 @@ export class Page extends CommonEntity {
   blocksS3Link!: string;
 
   @ManyToOne(() => User)
-  @Column()
-  authorId!: number;
+  author!: User;
 
   @ManyToOne(() => Document, (document) => document.pages)
-  @Column()
-  documentId!: number;
+  document!: Document;
 }

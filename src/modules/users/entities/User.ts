@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CommonEntity } from '../../../common/entities/CommonEntity';
 import { Document } from '../../documents/entities/Document';
 
@@ -13,7 +13,6 @@ export class User extends CommonEntity {
   @Column()
   email!: string;
 
-  @OneToMany(() => Document, (document) => document.authorId)
-  @Column()
+  @OneToMany(() => Document, (document) => document.author)
   documents!: Document[];
 }

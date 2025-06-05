@@ -1,5 +1,8 @@
 import { DataSource } from 'typeorm';
 import { User } from '../modules/users/entities/User';
+import { Document } from '../modules/documents/entities/Document';
+import { Page } from '../modules/pages/entities/Page';
+import { Access } from '../modules/accesses/entities/Access';
 
 export class DB {
   client = new DataSource({
@@ -9,7 +12,7 @@ export class DB {
     // username: 'test',
     // password: 'test',
     database: 'buildocs',
-    entities: [User],
+    entities: [User, Document, Page, Access],
     synchronize: true, // for development only
   });
 
