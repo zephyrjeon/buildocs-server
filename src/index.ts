@@ -1,18 +1,18 @@
 import 'reflect-metadata';
 import cors from 'cors';
 import express from 'express';
-import { db } from './db/db';
 import { appRoutes } from './routes';
+import { di } from './di/di';
 
 const app = express();
 
 const startServer = () => {
+  di.db.connect();
+
   app.use(cors({}));
   app.use(express.json()); // for parsing application/json
   app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
   appRoutes(app);
-
-  db.connect();
 
   app.listen({ port: 3000 }, () => {
     console.log(`🚀 Server ready at ${3000}`);
