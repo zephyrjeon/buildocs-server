@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
 import { DI } from '../../../di/di';
 import { Page } from '../entities/Page';
-import { CreateUserInput } from '../schemas/createUserInput';
-import { UpdateUserInput } from '../schemas/updateUserInput';
+import { CreatePageInput } from '../schemas/createPageInput';
+import { UpdatePageInput } from '../schemas/updatePageInput';
 
 export class PageRepository {
   repo: Repository<Page>;
@@ -11,28 +11,49 @@ export class PageRepository {
     this.repo = this.di.db.client.getRepository(Page);
   }
 
-  async create(input: CreateUserInput) {
-    return this.repo.create().save();
+  async create(
+    input: CreatePageInput & { blocksS3Link: string; order: number }
+  ) {
+    const { ownerId, documentId, ...rest } = input;
+    return this.repo
+      .create({
+        owner: { id: ownerId },
+        document: { id: documentId },
+        ...rest,
+      })
+      .save();
   }
 
-  async findAll() {
-    return this.repo.find();
+  async findAllByDocumentId(documentId: number) {
+    return this.repo.find({
+      where: { document: { id: documentId } },
+      relations: {
+        owner: true,
+        document: true,
+      },
+    });
   }
 
   async findById(id: number) {
-    return this.repo.findOne({ where: { id } });
+    return this.repo.findOne({
+      where: { id },
+      relations: {
+        owner: true,
+        document: true,
+      },
+    });
   }
 
-  async update(input: UpdateUserInput) {
+  async update(input: UpdatePageInput & { blocksS3Link?: string }) {
     const { id, ...rest } = input;
 
-    const user = await this.findById(id);
+    const page = await this.findById(id);
 
-    if (!user) throw Error('Not Found');
+    if (!page) throw Error('Not Found');
 
-    const updated = { ...user, ...rest };
+    const updated = { ...page, ...rest };
 
-    await this.repo.save(Object.assign(user, rest));
+    await this.repo.save(Object.assign(page, rest));
 
     return updated;
   }

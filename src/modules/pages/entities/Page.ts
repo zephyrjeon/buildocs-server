@@ -8,20 +8,17 @@ export class Page extends CommonEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column({ nullable: true })
   title!: string;
 
   @Column()
   order!: number;
 
   @Column()
-  blocks!: string;
-
-  @Column()
   blocksS3Link!: string;
 
   @ManyToOne(() => User)
-  author!: User;
+  owner!: User;
 
   @ManyToOne(() => Document, (document) => document.pages)
   document!: Document;
