@@ -13,6 +13,6 @@ export class User extends CommonEntity {
   @Column()
   email!: string;
 
-  @OneToMany(() => Document, (document) => document.author)
+  @OneToMany(() => Document, (document) => document.owner)
   documents!: Document[];
 }
