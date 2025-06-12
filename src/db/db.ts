@@ -17,7 +17,7 @@ export class DB {
   });
 
   connect() {
-    this.client
+    return this.client
       .initialize()
       .then(() => {
         console.log('Data Source has been initialized!');
