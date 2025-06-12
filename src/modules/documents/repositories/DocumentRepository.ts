@@ -11,28 +11,42 @@ export class DocumentRepository {
     this.repo = this.di.db.client.getRepository(Document);
   }
 
-  async create({ author, order }: { author: User; order: number }) {
-    return this.repo.create({ author, order }).save();
+  async create({ owner, order }: { owner: User; order: number }) {
+    return this.repo.create({ owner, order }).save();
   }
 
-  async findAll() {
-    return this.repo.find();
+  async findAllByOwnerId(ownerId: number) {
+    return this.repo.find({
+      where: { owner: { id: ownerId } },
+      relations: {
+        owner: true,
+        pages: true,
+        accesses: true,
+      },
+    });
   }
 
-  async findById(id: number) {
-    return this.repo.findOne({ where: { id } });
+  async findOneById(id: number) {
+    return this.repo.findOne({
+      where: { id },
+      relations: {
+        owner: true,
+        pages: true,
+        accesses: true,
+      },
+    });
   }
 
   async update(input: UpdateDocumentInput) {
     const { id, ...rest } = input;
 
-    const user = await this.findById(id);
+    const document = await this.findOneById(id);
 
-    if (!user) throw Error('Not Found');
+    if (!document) throw Error('Not Found');
 
-    const updated = { ...user, ...rest };
+    const updated = { ...document, ...rest };
 
-    await this.repo.save(Object.assign(user, rest));
+    await this.repo.save(Object.assign(document, rest));
 
     return updated;
   }

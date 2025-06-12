@@ -15,14 +15,14 @@ export class Document extends CommonEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column({ nullable: true })
   title!: string;
 
   @Column()
   order!: number;
 
   @ManyToOne(() => User, (user) => user.documents)
-  author!: User;
+  owner!: User;
 
   @OneToMany(() => Page, (page) => page.document)
   pages!: Page[];
