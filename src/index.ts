@@ -3,10 +3,13 @@ import cors from 'cors';
 import express from 'express';
 import { appRoutes } from './routes';
 import { di } from './di/di';
+import { appConfigs } from './configs/getAppConfigs';
 
 const app = express();
 
 const startServer = async () => {
+  console.log('App Configs: ', appConfigs);
+
   await di.db.connect();
 
   app.use(cors({}));
