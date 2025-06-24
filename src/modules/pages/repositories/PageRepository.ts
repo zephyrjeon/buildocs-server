@@ -12,7 +12,7 @@ export class PageRepository {
   }
 
   async create(
-    input: CreatePageInput & { blocksS3Link: string; order: number }
+    input: CreatePageInput & { blocksS3Key: string; order: number }
   ) {
     const { ownerId, documentId, ...rest } = input;
     return this.repo
@@ -44,7 +44,7 @@ export class PageRepository {
     });
   }
 
-  async update(input: UpdatePageInput & { blocksS3Link?: string }) {
+  async update(input: UpdatePageInput & { blocksS3Key?: string }) {
     const { id, ...rest } = input;
 
     const page = await this.findById(id);

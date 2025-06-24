@@ -1,6 +1,7 @@
 import { DI, di } from '../../../di/di';
 import { CreatePageInput } from '../schemas/createPageInput';
 import { UpdatePageInput } from '../schemas/updatePageInput';
+import { v4 as uuidv4 } from 'uuid';
 
 export class PageService {
   constructor(private di: DI) {}
@@ -16,9 +17,13 @@ export class PageService {
   async create(input: CreatePageInput) {
     const document = await this.documentRepo.findOneById(input.documentId);
     const order = document?.pages?.length ?? 0;
-    const blocksS3Link = '';
 
-    return this.pageRepo.create({ ...input, order, blocksS3Link });
+    const body = JSON.stringify({ test: 'testBlocks' });
+    const key = uuidv4();
+
+    this.di.providers.s3.uploadBlocks(key, body);
+
+    return this.pageRepo.create({ ...input, order, blocksS3Key: key });
   }
 
   async getListByDocumentId(documentId: number) {
@@ -26,7 +31,14 @@ export class PageService {
   }
 
   async getById(id: number) {
-    return this.pageRepo.findById(id);
+    const page = await this.pageRepo.findById(id);
+    if (!page) throw new Error('Not found');
+
+    const blocks = await this.di.providers.s3.readBlocks(page.blocksS3Key);
+
+    const pageWithBlocks = { ...page, blocks };
+
+    return pageWithBlocks;
   }
 
   async update(input: UpdatePageInput) {

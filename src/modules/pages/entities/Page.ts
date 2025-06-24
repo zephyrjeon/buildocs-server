@@ -14,8 +14,8 @@ export class Page extends CommonEntity {
   @Column()
   order!: number;
 
-  @Column()
-  blocksS3Link!: string;
+  @Column({ unique: true })
+  blocksS3Key!: string;
 
   @ManyToOne(() => User)
   owner!: User;

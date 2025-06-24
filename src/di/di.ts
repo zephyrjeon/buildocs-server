@@ -1,10 +1,13 @@
+import { appConfigs } from '../configs/getAppConfigs';
 import { DB } from '../db/db';
 import { AccessRepository } from '../modules/accesses/repositories/AccessRepository';
 import { DocumentRepository } from '../modules/documents/repositories/DocumentRepository';
 import { PageRepository } from '../modules/pages/repositories/PageRepository';
 import { UserRepository } from '../modules/users/repositories/UserRepository';
+import { S3Provider } from '../providers/s3';
 
 class _DI {
+  private _appConfigs = appConfigs;
   private _db = new DB();
   private _repos = {
     user: new UserRepository(this),
@@ -13,12 +16,24 @@ class _DI {
     access: new AccessRepository(this),
   };
 
+  private _providers = {
+    s3: new S3Provider(this),
+  };
+
+  get appConfigs() {
+    return this._appConfigs;
+  }
+
   get db() {
     return this._db;
   }
 
   get repos() {
     return this._repos;
+  }
+
+  get providers() {
+    return this._providers;
   }
 }
 

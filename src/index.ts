@@ -1,9 +1,9 @@
-import 'reflect-metadata';
 import cors from 'cors';
 import express from 'express';
-import { appRoutes } from './routes';
-import { di } from './di/di';
+import 'reflect-metadata';
 import { appConfigs } from './configs/getAppConfigs';
+import { di } from './di/di';
+import { appRoutes } from './routes';
 
 const app = express();
 
