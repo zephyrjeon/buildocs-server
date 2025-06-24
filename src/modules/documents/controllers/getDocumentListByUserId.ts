@@ -2,10 +2,10 @@ import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 import { documentService } from '../services/DocumentService';
 
-export async function getDocumentListByOwnerId(req: Request, res: Response) {
+export async function getDocumentListByUserId(req: Request, res: Response) {
   try {
-    const ownerId = parseInt(req.body.ownerId);
-    const list = await documentService.getListByOwnerId(ownerId);
+    const userId = parseInt(req.body.userId);
+    const list = await documentService.getListByUserId(userId);
     res.status(StatusCodes.OK).json({ list });
   } catch (e) {
     res.status(StatusCodes.BAD_REQUEST).json({ error: e });

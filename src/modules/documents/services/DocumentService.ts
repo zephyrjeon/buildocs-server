@@ -12,20 +12,20 @@ export class DocumentService {
     return this.di.repos.user;
   }
 
-  async create(ownerId: number) {
-    const owner = await this.userRepo.findOneById(ownerId);
+  async create(userId: number) {
+    const user = await this.userRepo.findOneById(userId);
 
-    if (!owner) throw new Error('User Not Found');
+    if (!user) throw new Error('User Not Found');
 
-    const order = owner?.documents?.length ?? 0;
+    const order = user?.documents?.length ?? 0;
 
     // TODO: create a main page
 
-    return this.documentRepo.create({ owner, order });
+    return this.documentRepo.create({ user, order });
   }
 
-  async getListByOwnerId(ownerId: number) {
-    return this.documentRepo.findAllByOwnerId(ownerId);
+  async getListByUserId(userId: number) {
+    return this.documentRepo.findAllByUserId(userId);
   }
 
   async getById(id: number) {

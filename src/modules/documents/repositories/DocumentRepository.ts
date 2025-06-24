@@ -11,15 +11,15 @@ export class DocumentRepository {
     this.repo = this.di.db.client.getRepository(Document);
   }
 
-  async create({ owner, order }: { owner: User; order: number }) {
-    return this.repo.create({ owner, order }).save();
+  async create({ user, order }: { user: User; order: number }) {
+    return this.repo.create({ user, order }).save();
   }
 
-  async findAllByOwnerId(ownerId: number) {
+  async findAllByUserId(userId: number) {
     return this.repo.find({
-      where: { owner: { id: ownerId } },
+      where: { user: { id: userId } },
       relations: {
-        owner: true,
+        user: true,
         pages: true,
         accesses: true,
       },
@@ -30,7 +30,7 @@ export class DocumentRepository {
     return this.repo.findOne({
       where: { id },
       relations: {
-        owner: true,
+        user: true,
         pages: true,
         accesses: true,
       },

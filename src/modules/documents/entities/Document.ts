@@ -22,7 +22,7 @@ export class Document extends CommonEntity {
   order!: number;
 
   @ManyToOne(() => User, (user) => user.documents)
-  owner!: User;
+  user!: User;
 
   @OneToMany(() => Page, (page) => page.document)
   pages!: Page[];

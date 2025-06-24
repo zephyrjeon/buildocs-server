@@ -20,7 +20,10 @@ export class UserRepository {
   }
 
   async findOneById(id: number) {
-    return this.repo.findOne({ where: { id }, relations: { documents: true } });
+    return this.repo.findOne({
+      where: { id },
+      relations: { documents: { pages: true } },
+    });
   }
 
   async update(input: UpdateUserInput) {

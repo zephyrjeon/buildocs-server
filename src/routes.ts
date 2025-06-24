@@ -8,7 +8,7 @@ import { createDocument } from './modules/documents/controllers/createDocument';
 import { updateDocument } from './modules/documents/controllers/updateDocument';
 import { deleteDocument } from './modules/documents/controllers/deleteDocument';
 import { getDocumentById } from './modules/documents/controllers/getDocumentById';
-import { getDocumentListByOwnerId } from './modules/documents/controllers/getDocumentListByOwnerId';
+import { getDocumentListByUserId } from './modules/documents/controllers/getDocumentListByUserId';
 import { getPageListByDocumentId } from './modules/pages/controllers/getPageListByDocumentId';
 import { getPageById } from './modules/pages/controllers/getPageById';
 import { createPage } from './modules/pages/controllers/createPage';
@@ -24,7 +24,7 @@ export const appRoutes = (app: Application) => {
   const basePath = (v: number) => `/api/v${v}`;
 
   app.get(basePath(1) + '/health', (req, res) => {
-    res.status(200);
+    res.status(200).json({ ok: 'ok' });
   });
   // users
   app.get(basePath(1) + '/me', () => {}); // get current users
@@ -34,7 +34,7 @@ export const appRoutes = (app: Application) => {
   app.post(basePath(1) + '/users/:id', updateUser); // update a user
   app.delete(basePath(1) + '/users/:id', deleteUser); // delete a user
   // documents
-  app.get(basePath(1) + '/documents', getDocumentListByOwnerId); // get documents of current user
+  app.get(basePath(1) + '/documents', getDocumentListByUserId); // get documents of current user
   app.get(basePath(1) + '/documents/:id', getDocumentById); // get a document
   app.post(basePath(1) + '/documents', createDocument); // create a document
   app.post(basePath(1) + '/documents/:id', updateDocument); // update a document
